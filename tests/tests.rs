@@ -1,10 +1,21 @@
 use rust_vim;
+use rust_vim::Arguments;
+use std::process;
 
 #[test]
 fn check_file_readability() {
-    let content_to_check = rust_vim::open_file(String::from(".gitignore"));
+    let file = Arguments::new(&vec![String::from("main_file"), String::from(".gitignore")])
+        .unwrap_or_else(|err| {
+            eprintln!(
+                "There was a problem while parsing the provided arguments: \n {}",
+                err
+            );
+            process::exit(1)
+        });
+
+    let content = file.content;
 
     let actual_file_content = "/target\n\nCargo.lock";
 
-    assert_eq!(content_to_check, actual_file_content);
+    assert_eq!(content, actual_file_content);
 }

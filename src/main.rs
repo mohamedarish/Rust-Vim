@@ -1,19 +1,49 @@
-use std::{env, process};
-
-use rust_vim::{open_file, Arguments};
+use rust_vim::{die, to_ctrl_byte};
+use std::io::{self, stdout, Read};
+use termion::raw::IntoRawMode;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let mut command = false;
+    let mut insert = false;
 
-    println!("{:#?}", args);
+    let _stdout = stdout().into_raw_mode().unwrap();
 
-    let file = Arguments::new(&args).unwrap_or_else(|err| {
-        eprintln!(
-            "There was a problem while parsing the provided arguments: \n {}",
-            err
-        );
-        process::exit(1)
-    });
+    for b in io::stdin().bytes() {
+        match b {
+            Ok(b) => {
+                let c = b as char;
 
-    let content = open_file(file.file_name);
+                if insert {
+                    if !c.is_control() {
+                        println!("{}\r", c);
+                    } else {
+                        if b == 27 {
+                            insert = false;
+                        } else {
+                            if b == to_ctrl_byte('c') {
+                                insert = false;
+                            } else {
+                                println!("{:?}\r", b);
+                            }
+                        }
+                    }
+                } else if command {
+                    if c == 'q' {
+                        println!("q");
+                        break;
+                    } else {
+                        command = false;
+                    }
+                }
+
+                if insert == false && command == false && c == 'i' {
+                    insert = true;
+                } else if insert == false && command == false && c == ':' {
+                    command = true;
+                    print!(":");
+                }
+            }
+            Err(err) => die(err),
+        }
+    }
 }

@@ -1,5 +1,4 @@
-use rust_vim;
-use rust_vim::Arguments;
+use rust_vim::{self, Arguments};
 use std::process;
 
 #[test]

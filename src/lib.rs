@@ -5,6 +5,7 @@ pub struct Arguments {
     pub content: String,
 }
 
+#[must_use]
 pub fn open_file(file_path: String) -> String {
     fs::read_to_string(file_path).expect("Permission denied")
 }
@@ -28,11 +29,6 @@ impl Arguments {
     pub fn print_window(self) {}
 }
 
-pub fn to_ctrl_byte(c: char) -> u8 {
-    let byte = c as u8;
-    byte & 0b0001_1111
-}
-
-pub fn die(e: std::io::Error) {
+pub fn die(e: &std::io::Error) {
     panic!("{}", e);
 }

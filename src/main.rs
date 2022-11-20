@@ -1,9 +1,6 @@
-#![warn(clippy::all, clippy::pedantic)]
-
 mod editor;
-
-use editor::Editor;
+pub mod terminal;
 
 fn main() {
-    Editor::run();
+    println!("Hello, World");
 }

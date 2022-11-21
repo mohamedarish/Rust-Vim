@@ -26,6 +26,7 @@ impl Editor {
 
             // if let error is keypress not found die
         }
+        // some sample code I wrote just so my github has some activity today
     }
 
     fn move_cursor(&mut self, key: Key) {}

@@ -29,6 +29,16 @@ impl Editor {
         }
     }
 
+    fn process_keypress(&mut self) {
+        // This returns either () or Error
+
+        // read key being pressed
+
+        // Match key to the special functions and match Key::char(c) enter c at the current position of the cursor and match _ to ()
+
+        // if Ok return ()
+    }
+
     fn move_cursor(&mut self, key: Key) {
         // position is cursor position
 
@@ -39,6 +49,21 @@ impl Editor {
         // match key to all movements like up, down, l/r, home, end, pgup, pgdn
 
         // set self.position to the new position
+    }
+
+    fn refresh_screen(&self) {
+        // Returns () or Error
+        // hide cursor
+
+        // set position to position default
+
+        if self.should_quit {
+            // close editor and save if required
+        }
+
+        // fill text again and then set cursor position back to previous position
+
+        // flush screen
     }
 }
 

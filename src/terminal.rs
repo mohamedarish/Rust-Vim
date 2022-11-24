@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 pub struct Terminal {
     pub size: Size,
 }
@@ -30,5 +32,17 @@ impl Terminal {
 
     pub fn clear_screen() {
         print!("{}", termion::clear::All);
+    }
+
+    pub fn flush() -> Result<(), io::Error> {
+        io::stdout().flush()
+    }
+
+    pub fn show_cursor() {
+        println!("{}", termion::cursor::Show);
+    }
+
+    pub fn hide_cursor() {
+        println!("{}", termion::cursor::Hide);
     }
 }

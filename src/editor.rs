@@ -39,7 +39,7 @@ impl Editor {
         // if Ok return ()
     }
 
-    fn move_cursor(&mut self, key: Key) {
+    fn move_cursor(&mut self, _key: Key) {
         // position is cursor position
 
         // set size to terminal.size

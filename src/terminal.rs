@@ -20,12 +20,13 @@ impl Default for Terminal {
                     width: size.1,
                 },
             },
-            Err(error) => panic!("Could not resolve terminal size\n{}", error),
+            Err(error) => panic!("Could not resolve terminal size\n{error}"),
         }
     }
 }
 
 impl Terminal {
+    #[must_use]
     pub fn size(&self) -> &Size {
         &self.size
     }

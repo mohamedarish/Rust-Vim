@@ -26,6 +26,7 @@ impl Default for Terminal {
 }
 
 impl Terminal {
+    // small change to get to know if my branching works
     #[must_use]
     pub fn size(&self) -> &Size {
         &self.size

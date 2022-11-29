@@ -8,6 +8,8 @@
 mod editor;
 pub mod terminal;
 
+use editor::Editor;
+
 fn main() {
-    println!("Hello, World");
+    Editor::default().run();
 }

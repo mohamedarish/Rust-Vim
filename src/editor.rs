@@ -8,6 +8,8 @@ pub struct Editor {
     terminal: Terminal,
     cursor_position: Position,
     should_quit: bool,
+    insert: bool,
+    command: bool,
 }
 
 #[derive(Default)]
@@ -20,22 +22,48 @@ impl Editor {
     pub fn run(&mut self) {
         loop {
             // if let error is clear screen then die
+            if let Err(error) = self.refresh_screen() {
+                die(error);
+            }
 
             if self.should_quit {
                 break;
             }
 
-            // if let error is keypress die
+            if let Err(error) = self.process_keypress() {
+                die(error);
+            }
         }
     }
 
-    fn process_keypress(&mut self) {
+    fn process_keypress(&mut self) -> Result<(), io::Error> {
         // This returns either () or Error
-
+        let key_pressed = Terminal::read_key()?;
         // read key being pressed
 
+        if !self.insert {
+            if self.command {
+                match key_pressed {
+                    Key::Char('q') => self.should_quit = true,
+                    _ => (),
+                }
+            } else {
+                match key_pressed {
+                    Key::Char('i') => self.insert = true,
+                    Key::Char(':') => self.command = true,
+                    _ => (),
+                }
+            }
+        } else {
+            match key_pressed {
+                Key::Ctrl('c') => self.insert = false,
+                Key::Esc => self.insert = false,
+                Key::Char(c) => todo!(),
+                _ => (),
+            }
+        }
         // Match key to the special functions and match Key::char(c) enter c at the current position of the cursor and match _ to ()
-
+        Ok(())
         // if Ok return ()
     }
 
@@ -51,18 +79,22 @@ impl Editor {
         // set self.position to the new position
     }
 
-    fn refresh_screen(&self) {
+    fn refresh_screen(&self) -> Result<(), io::Error> {
         // Returns () or Error
         // hide cursor
+        Terminal::hide_cursor();
 
         // set position to position default
 
         if self.should_quit {
+            Terminal::clear_screen();
+            println!("Exiting...");
             // close editor and save if required
         }
 
-        // fill text again and then set cursor position back to previous position
+        Ok(())
 
+        // fill text again and then set cursor position back to previous position
         // flush screen
     }
 }

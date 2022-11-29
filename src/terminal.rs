@@ -1,4 +1,6 @@
-use std::io::{self, Write};
+use std::io;
+
+use termion::{event::Key, input::TermRead};
 
 pub struct Terminal {
     pub size: Size,
@@ -26,18 +28,13 @@ impl Default for Terminal {
 }
 
 impl Terminal {
-    // small change to get to know if my branching works
     #[must_use]
-    pub fn size(&self) -> &Size {
+    const fn size(&self) -> &Size {
         &self.size
     }
 
     pub fn clear_screen() {
         print!("{}", termion::clear::All);
-    }
-
-    pub fn flush() -> Result<(), io::Error> {
-        io::stdout().flush()
     }
 
     pub fn show_cursor() {
@@ -46,5 +43,13 @@ impl Terminal {
 
     pub fn hide_cursor() {
         println!("{}", termion::cursor::Hide);
+    }
+
+    pub fn read_key() -> Result<Key, io::Error> {
+        loop {
+            if let Some(key) = io::stdin().lock().keys().next() {
+                return key;
+            }
+        }
     }
 }

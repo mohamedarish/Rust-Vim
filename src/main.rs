@@ -13,19 +13,24 @@ fn main() {
     // Editor::default().run();
 
     loop {
+        let pressed_key = read_key();
+
+        match pressed_key {
+            Ok(key) => match key {
+                Key::Ctrl('a') => break,
+                Key::Char('\n') => println!("{}", termion::clear::All),
+                Key::Char(c) => print!("{c}"),
+                _ => panic!("Error"),
+            },
+            Err(error) => panic!("{}", error),
+        }
+    }
+}
+
+fn read_key() -> Result<Key, std::io::Error> {
+    loop {
         if let Some(key) = std::io::stdin().lock().keys().next() {
-            match key {
-                Ok(k) => match k {
-                    Key::Ctrl('a') => {
-                        break;
-                    }
-                    Key::Char('\n') => {
-                        println!("{}", termion::clear::All);
-                    }
-                    _ => println!("{k:?}\r"),
-                },
-                Err(error) => panic!("{}", error),
-            }
+            return key;
         }
     }
 }

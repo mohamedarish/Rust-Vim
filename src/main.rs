@@ -7,7 +7,6 @@
 
 mod editor;
 use termion::{event::Key, input::TermRead};
-
 // use editor::Editor;
 
 fn main() {

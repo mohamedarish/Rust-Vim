@@ -6,6 +6,8 @@
 )]
 
 mod editor;
+use std::io::Write;
+
 use termion::{event::Key, input::TermRead};
 // use editor::Editor;
 
@@ -19,14 +21,24 @@ fn main() {
             Ok(key) => match key {
                 Key::Ctrl('a') => break,
                 Key::Char('\n') => println!("{}", termion::clear::All),
-                Key::Char(c) => print!("{c}"),
-                _ => panic!("Error"),
+                // Key::Char(c) => println!("{c}"),
+                _ => println!("{key:?}"),
             },
             Err(error) => panic!("{}", error),
+        }
+
+        let n = flush();
+
+        match n {
+            Ok(n) => n,
+            Err(error) => panic!("{error}"),
         }
     }
 }
 
+fn flush() -> Result<(), std::io::Error> {
+    std::io::stdout().flush()
+}
 fn read_key() -> Result<Key, std::io::Error> {
     loop {
         if let Some(key) = std::io::stdin().lock().keys().next() {

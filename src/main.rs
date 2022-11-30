@@ -13,6 +13,7 @@ use termion::{event::Key, input::TermRead};
 
 fn main() {
     // Editor::default().run();
+    // Make it clear screen after every keypress. 🤯🤯🤯🤯🤯🤯🤯🤯
 
     loop {
         let pressed_key = read_key();

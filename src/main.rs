@@ -21,9 +21,9 @@ fn main() {
         match pressed_key {
             Ok(key) => match key {
                 Key::Ctrl('a') => break,
-                Key::Char('\n') => println!("{}", termion::clear::All),
                 // Key::Char(c) => println!("{c}"),
-                _ => println!("{key:?}"),
+                Key::Char('\n') => println!("{}", termion::clear::All),
+                _ => println!("{key:?} {}", termion::clear::CurrentLine),
             },
             Err(error) => panic!("{}", error),
         }

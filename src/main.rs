@@ -5,13 +5,16 @@
     clippy::expect_used
 )]
 
-use std::io::Write;
+use std::io::{self, Read, Write};
 use termion::input::TermRead;
 
 use termion::event::Key;
+use termion::raw::IntoRawMode;
 
 fn main() {
     println!("move up\nmove right\nmove left\nmove down");
+
+    let stdout = std::io::stdout().into_raw_mode().unwrap();
 
     loop {
         let pressed_key = read_key();
@@ -32,21 +35,11 @@ fn main() {
                 Key::Up => println!("{}", termion::cursor::Up(1)),
                 _ => println!("po"),
             },
-            Err(error) => panic!("{}", error),
-        }
-
-        let n = flush();
-
-        match n {
-            Ok(n) => n,
             Err(error) => panic!("{error}"),
         }
     }
 }
 
-fn flush() -> Result<(), std::io::Error> {
-    std::io::stdout().flush()
-}
 fn read_key() -> Result<Key, std::io::Error> {
     loop {
         if let Some(key) = std::io::stdin().lock().keys().next() {

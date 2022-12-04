@@ -1,9 +1,4 @@
-#![warn(
-    clippy::pedantic,
-    clippy::nursery,
-    clippy::unwrap_used,
-    clippy::expect_used
-)]
+#![warn(clippy::pedantic, clippy::nursery, clippy::expect_used)]
 
 use std::io::{self, Read, Write};
 use termion::input::TermRead;
@@ -15,7 +10,6 @@ fn main() {
     println!("move up\nmove right\nmove left\nmove down");
 
     let stdout = std::io::stdout().into_raw_mode().unwrap();
-
     loop {
         let pressed_key = read_key();
 

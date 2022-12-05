@@ -27,7 +27,9 @@ fn main() {
         match key.unwrap() {
             Key::Char('\n') => println!("\r"),
             Key::Ctrl('c') => break,
-            Key::Char(c) | Key::Ctrl(c) | Key::Alt(c) => print!("{c}"),
+            Key::Char(c) => print!("{c}"),
+            Key::Ctrl(c) => print!("^{c}"),
+            Key::Alt(c) => print!("#{c}"),
             Key::Left => print!("{}", termion::cursor::Left(1)),
             Key::Right => print!("{}", termion::cursor::Right(1)),
             Key::Up => print!("{}", termion::cursor::Up(1)),

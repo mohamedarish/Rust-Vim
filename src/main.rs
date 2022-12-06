@@ -6,6 +6,8 @@ use termion::input::TermRead;
 use termion::event::Key;
 use termion::raw::IntoRawMode;
 
+pub mod editor;
+pub mod terminal;
 fn main() {
     println!("move up\nmove right\nmove left\nmove down");
 

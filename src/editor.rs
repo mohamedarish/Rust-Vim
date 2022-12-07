@@ -21,21 +21,26 @@ pub struct Editor {
 
 impl Editor {
     pub fn run(&mut self) {
-        write!(
-            self.terminal.output_view,
-            "{} {} {}",
-            termion::clear::All,
-            termion::cursor::Show,
-            termion::cursor::Goto(1, 1)
-        )
-        .unwrap();
+        self.clear_screen();
+
+        self.cursor_position.x_pos = 1;
+        self.cursor_position.y_pos = 1;
+
+        self.change_cursor_position();
 
         self.terminal.flush();
 
         loop {
             if self.exit_issued {
+                self.cursor_position.x_pos = 1;
+                self.cursor_position.y_pos = 1;
+                self.change_cursor_position();
+                self.clear_screen();
+                println!("GoodBye👋👋");
                 break;
             }
+
+            self.process_keypress();
         }
     }
 
@@ -56,6 +61,15 @@ impl Editor {
         }
 
         self.terminal.flush();
+    }
+
+    fn change_cursor_position(&self) {
+        let current_position = &self.cursor_position;
+
+        println!(
+            "{}",
+            termion::cursor::Goto(current_position.x_pos, current_position.y_pos),
+        );
     }
 
     fn clear_screen(&mut self) {

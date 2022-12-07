@@ -9,13 +9,13 @@ use termion::{
     raw::{IntoRawMode, RawTerminal},
 };
 
-struct Size {
-    height: u16,
-    width: u16,
+pub struct Size {
+    pub height: u16,
+    pub width: u16,
 }
 
 pub struct Terminal {
-    terminal_size: Size,
+    pub terminal_size: Size,
     pub output_view: RawTerminal<std::io::Stdout>,
 }
 

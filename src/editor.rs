@@ -20,7 +20,7 @@ pub struct Editor {
 
 impl Editor {
     pub fn run(&mut self) {
-        self.clear_screen();
+        Self::clear_screen();
 
         self.cursor_position.x_pos = 1;
         self.cursor_position.y_pos = 1;
@@ -34,7 +34,7 @@ impl Editor {
                 self.cursor_position.x_pos = 1;
                 self.cursor_position.y_pos = 1;
                 self.change_cursor_position();
-                self.clear_screen();
+                Self::clear_screen();
                 println!("GoodBye👋👋");
                 break;
             }
@@ -44,7 +44,7 @@ impl Editor {
     }
 
     fn process_keypress(&mut self) {
-        let key_entered = Terminal::process_keypress().unwrap();
+        let key_entered = Terminal::process_keypress();
         if !self.insert_mode && !self.comand_mode {
             match key_entered {
                 Key::Char('i') => self.insert_mode = true,
@@ -53,7 +53,7 @@ impl Editor {
                     print!(
                         "{}:",
                         termion::cursor::Goto(1, self.terminal.terminal_size.height)
-                    )
+                    );
                 }
                 Key::Char('y') | Key::Up => print!("{}", termion::cursor::Up(1)),
                 Key::Char('g') | Key::Left => print!("{}", termion::cursor::Left(1)),
@@ -76,16 +76,15 @@ impl Editor {
                 _ => print!(""),
             }
         } else if self.comand_mode {
-            match key_entered {
-                Key::Char('q') => self.exit_issued = true,
-                _ => {
-                    print!(
-                        "{} ",
-                        termion::cursor::Goto(1, self.terminal.terminal_size.height)
-                    );
-                    self.comand_mode = false;
-                    print!("{}", termion::cursor::Restore);
-                }
+            if key_entered == Key::Char('q') {
+                self.exit_issued = true;
+            } else {
+                print!(
+                    "{} ",
+                    termion::cursor::Goto(1, self.terminal.terminal_size.height)
+                );
+                self.comand_mode = false;
+                print!("{}", termion::cursor::Restore);
             }
         }
 
@@ -105,7 +104,7 @@ impl Editor {
         self.terminal.flush();
     }
 
-    fn clear_screen(&mut self) {
+    fn clear_screen() {
         print!("{}", termion::clear::All);
     }
 }

@@ -1,7 +1,6 @@
 use termion::event::Key;
 
 use crate::terminal::Terminal;
-use std::io::{self, Read, Write};
 
 #[derive(Default)]
 struct Position {
@@ -11,7 +10,7 @@ struct Position {
 
 #[derive(Default)]
 pub struct Editor {
-    file_name: String,
+    // file_name: String, // This is to store the filename of the file being displayed right now
     terminal: Terminal,
     insert_mode: bool,
     comand_mode: bool,
@@ -28,7 +27,7 @@ impl Editor {
 
         self.change_cursor_position();
 
-        self.terminal.flush();
+        self.flush();
 
         loop {
             if self.exit_issued {
@@ -90,7 +89,7 @@ impl Editor {
             }
         }
 
-        self.terminal.flush();
+        self.flush();
     }
 
     fn change_cursor_position(&self) {
@@ -102,11 +101,11 @@ impl Editor {
         );
     }
 
+    fn flush(&mut self) {
+        self.terminal.flush();
+    }
+
     fn clear_screen(&mut self) {
         print!("{}", termion::clear::All);
     }
-}
-
-fn die(e: &io::Error) {
-    panic!("{e}");
 }

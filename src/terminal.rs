@@ -104,4 +104,16 @@ impl Terminal {
     pub fn clear_screen() {
         print!("{}", termion::clear::All);
     }
+
+    pub fn clear_line() {
+        print!("{}", termion::clear::CurrentLine);
+    }
+
+    pub fn clear_after_cursor() {
+        print!("{}", termion::clear::AfterCursor);
+    }
+
+    pub fn clear_before_cursor() {
+        print!("{}", termion::clear::BeforeCursor);
+    }
 }

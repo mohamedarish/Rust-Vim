@@ -31,10 +31,18 @@ impl Editor {
 
         match key_entered {
             Key::Ctrl('g') => self.exit_issued = true,
+            Key::Ctrl('n') => Self::clear_screen(),
+            Key::Ctrl('m') => Self::clear_line(),
+            Key::Ctrl('l') => Self::clear_after_cursor(),
+            Key::Ctrl('k') => Self::clear_before_cursor(),
             Key::Char(c) => print!("{c}"),
             Key::Ctrl(c) => print!("^{c}"),
             Key::Alt(c) => print!("\\{c}"),
             Key::Backspace | Key::Delete => print!("{} ", termion::cursor::Left(1)),
+            Key::Down => print!("{}", termion::cursor::Down(1)),
+            Key::Up => print!("{}", termion::cursor::Up(1)),
+            Key::Right => print!("{}", termion::cursor::Right(1)),
+            Key::Left => print!("{}", termion::cursor::Left(1)),
             _ => print!(""),
         }
 
@@ -46,6 +54,18 @@ impl Editor {
     }
 
     fn clear_screen() {
-        print!("{}", termion::clear::All);
+        Terminal::clear_screen();
+    }
+
+    fn clear_line() {
+        Terminal::clear_line();
+    }
+
+    fn clear_after_cursor() {
+        Terminal::clear_after_cursor();
+    }
+
+    fn clear_before_cursor() {
+        Terminal::clear_before_cursor();
     }
 }

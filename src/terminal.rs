@@ -17,65 +17,39 @@ pub struct Size {
 }
 
 pub struct Terminal {
-    terminal_size: Size,
+    // terminal_size: Size,
     output_view: RawTerminal<std::io::Stdout>,
     position: Position,
 }
 
 impl Default for Terminal {
     fn default() -> Self {
-        let current_size = Self::size();
+        // let current_size = Self::size();
 
         Self {
-            terminal_size: Size {
-                height: current_size.1,
-                width: current_size.0,
-            },
-            output_view: std::io::stdout().into_raw_mode().unwrap(),
+            // terminal_size: Size {
+            //     height: current_size.1,
+            //     width: current_size.0,
+            // },
+            output_view: std::io::stdout().into_raw_mode().expect("Cannot parse into raw mode"),
             position: Position { x_pos: 1, y_pos: 2 },
         }
     }
 }
 
 impl Terminal {
-    /// # Reads the key being pressed
-    ///
-    /// This function reads the key entered and returns it
-    ///
-    /// # Usage
-    /// ```
-    ///     let key = Terminal::Default().process_keypress();
-    /// ```
-    ///
-    /// # Panics
-    ///
-    /// This function panics if for some reason it can't match the input to some key in the termion Package
-    ///
     #[must_use]
     pub fn process_keypress() -> Key {
         loop {
             if let Some(key) = stdin().lock().keys().next() {
-                return key.unwrap();
+                return key.expect("The key cannot be parsed into a Key");
             }
         }
     }
 
-    /// # finds the size of the terminal
-    ///
-    /// This function returns the size of the current terminal window as (u16, u16)
-    ///
-    ///
-    /// # Usage
-    /// ```
-    ///     let current_size = Terminal::size();
-    /// ```
-    ///
-    /// # Panics
-    ///
-    /// this function panics if for some reason, the size of the terminal cannot be found by termion
-    #[must_use]
-    pub fn size() -> (u16, u16) {
-        termion::terminal_size().unwrap()
+
+    #[must_use] pub fn size() -> (u16, u16) {
+        termion::terminal_size().expect("Cannot read the terminal's size")
     }
 
     pub fn move_cursor(self) {
@@ -98,7 +72,7 @@ impl Terminal {
     /// This function panics if there is some sort of exception blocking the program from flushing the stack
     ///
     pub fn flush(&mut self) {
-        self.output_view.flush().unwrap();
+        self.output_view.flush().expect("Cannot flush the current input to os");
     }
 
     pub fn clear_screen() {
